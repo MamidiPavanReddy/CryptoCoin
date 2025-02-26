@@ -7,18 +7,14 @@ const watchlist = require('./WatchList');
 const app = express();
 const PORT = 3000;
 
-
 app.use(cors());
-
-
 app.use(bodyParser.json());
-
 
 connectDB();
 
-
 const router = express.Router();
 
+// Fetch watchlist 
 router.get('/watchlist', async (req, res) => {
   try {
     const items = await watchlist.getItems();
@@ -28,20 +24,22 @@ router.get('/watchlist', async (req, res) => {
   }
 });
 
+// Add to watchlist 
 router.post('/watchlist', async (req, res) => {
-  const { symbol } = req.body;
-  if (!symbol) {
-    return res.status(400).json({ error: 'Symbol is required' });
+  const { symbol, name, id } = req.body; 
+  if (!symbol || !name || !id) {
+    return res.status(400).json({ error: 'Symbol, Name, and ID are required' });
   }
 
   try {
-    await watchlist.addItem(symbol);
+    await watchlist.addItem({ symbol, name, id });  
     res.status(201).send();
   } catch (err) {
     res.status(500).json({ error: 'Failed to add item to watchlist' });
   }
 });
 
+// Remove from watchlist
 router.delete('/watchlist', async (req, res) => {
   const { symbol } = req.body;
   if (!symbol) {
@@ -59,7 +57,6 @@ router.delete('/watchlist', async (req, res) => {
     res.status(500).json({ error: 'Failed to remove item from watchlist' });
   }
 });
-
 
 app.use(router);
 
