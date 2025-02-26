@@ -13,9 +13,7 @@ function CryptoDashboard() {
   useEffect(() => {
     const getCoins = async () => {
       try {
-        // Call our backend instead of CoinMarketCap API directly
         const response = await axios.get("http://localhost:5000/crypto");
-        console.log(response);
 
         if (response.data && response.data.data) {
           setCoins(response.data.data);

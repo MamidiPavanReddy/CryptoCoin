@@ -7,7 +7,7 @@ function CoinCard({ coin }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Check if the coin is in the watchlist
+
   useEffect(() => {
     const checkWatchlist = async () => {
       try {
@@ -22,7 +22,6 @@ function CoinCard({ coin }) {
     checkWatchlist();
   }, [coin.symbol]);
 
-  // Add or remove the coin from the watchlist
   const handleWatchlistToggle = async () => {
     setLoading(true);
     setError(null);

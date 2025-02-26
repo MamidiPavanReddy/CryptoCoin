@@ -1,7 +1,7 @@
-const API_BASE_URL = 'http://localhost:3000'; // Replace with your backend URL
+const API_BASE_URL = 'http://localhost:3000'; 
 
 const watchlistService = {
-  // Fetch all watchlist items
+
   getWatchlist: async () => {
     try {
       const response = await fetch(`http://localhost:3000/watchlist`);

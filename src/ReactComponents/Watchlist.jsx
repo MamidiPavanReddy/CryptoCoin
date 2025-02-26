@@ -9,11 +9,16 @@ const Watchlist = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch watchlist data from the backend
   const fetchWatchlist = async () => {
     try {
       const data = await watchlistService.getWatchlist();
-      setWatchlistCoins(data);
+
+      const updatedCoins = data.map(coin => ({
+        ...coin,
+        image: `https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`, 
+      }));
+
+      setWatchlistCoins(updatedCoins);
       setError(null);
     } catch (err) {
       console.error('Failed to fetch watchlist:', err);
@@ -23,31 +28,28 @@ const Watchlist = () => {
     }
   };
 
-  // Add a new item to the watchlist
   const handleAdd = async () => {
     if (!symbol) return;
     try {
       await watchlistService.addToWatchlist(symbol);
-      setSymbol(''); // Clear input
-      fetchWatchlist(); // Refresh the list
+      setSymbol('');
+      fetchWatchlist();
     } catch (err) {
       console.error('Failed to add item:', err);
       setError('Failed to add item. Please try again.');
     }
   };
 
-  // Remove an item from the watchlist
   const handleRemove = async (symbol) => {
     try {
       await watchlistService.removeFromWatchlist(symbol);
-      fetchWatchlist(); // Refresh the list
+      fetchWatchlist();
     } catch (err) {
       console.error('Failed to remove item:', err);
       setError('Failed to remove item. Please try again.');
     }
   };
 
-  // Fetch watchlist on component mount
   useEffect(() => {
     fetchWatchlist();
   }, []);
